@@ -39,6 +39,16 @@ class ExceptionHandlingMiddleware implements MiddlewareInterface
         } elseif ($e instanceof MethodNotAllowedException) {
             $status = 405;
             $headers['Allow'] = implode(', ', $e->getAllowedMethods());
+        } elseif ($e instanceof \Nex\Validation\Exceptions\ValidationException) {
+            return new JsonResponse([
+                'type' => 'validation_error',
+                'message' => $e->getMessage(),
+                'errors' => $e->getErrors(),
+            ], status: 422);
+        } elseif ($e instanceof \Nex\Auth\Exceptions\AuthenticationException) {
+            $status = 401;
+        } elseif ($e instanceof \Nex\Authorization\Exceptions\AuthorizationException) {
+            $status = 403;
         }
 
         $wantsJson = str_contains($request->getHeaderLine('Accept'), 'application/json')

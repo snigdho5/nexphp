@@ -49,11 +49,23 @@ class TestClient
         return $this->request('DELETE', $uri, headers: $headers);
     }
 
+    private ?string $bearerToken = null;
+
+    public function actingWithToken(string $token): static
+    {
+        $this->bearerToken = $token;
+        return $this;
+    }
+
     /**
      * @param array<string, string|list<string>> $headers
      */
     public function request(string $method, string $uri, array $headers = [], string $body = ''): TestResponse
     {
+        if ($this->bearerToken !== null && !isset($headers['Authorization'])) {
+            $headers['Authorization'] = 'Bearer ' . $this->bearerToken;
+        }
+
         $request = new ServerRequest(
             method: $method,
             uri: $uri,
@@ -79,8 +91,11 @@ class TestClient
     private function requestWithPayload(string $method, string $uri, array|string $data, array $headers): TestResponse
     {
         $body = '';
+        $parsedBody = null;
+
         if (is_array($data)) {
             $body = json_encode($data, JSON_THROW_ON_ERROR);
+            $parsedBody = $data;
             $headers['Content-Type'] ??= 'application/json';
         } else {
             $body = $data;
@@ -88,6 +103,21 @@ class TestClient
 
         $headers['Accept'] ??= 'application/json';
 
-        return $this->request($method, $uri, $headers, $body);
+        $request = new ServerRequest(
+            method: $method,
+            uri: $uri,
+            headers: $headers,
+            body: new Stream($body)
+        );
+
+        if ($parsedBody !== null) {
+            $request = $request->withParsedBody($parsedBody);
+        }
+
+        if ($this->bearerToken !== null && !isset($headers['Authorization'])) {
+            $request = $request->withHeader('Authorization', 'Bearer ' . $this->bearerToken);
+        }
+
+        return $this->dispatch($request);
     }
 }

@@ -243,13 +243,6 @@ class Container implements ContainerInterface
 
         foreach ($reflector->getParameters() as $parameter) {
             $name = $parameter->getName();
-
-            // Override by name
-            if (array_key_exists($name, $parameters)) {
-                $dependencies[] = $parameters[$name];
-                continue;
-            }
-
             $type = $parameter->getType();
 
             if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
@@ -258,6 +251,21 @@ class Container implements ContainerInterface
                 // Override by type name
                 if (array_key_exists($typeName, $parameters)) {
                     $dependencies[] = $parameters[$typeName];
+                    continue;
+                }
+
+                // If provided by parameter name and matches type
+                if (array_key_exists($name, $parameters) && ($parameters[$name] instanceof $typeName)) {
+                    $dependencies[] = $parameters[$name];
+                    continue;
+                }
+
+                // Support auto-resolving FormRequest subclasses
+                if (class_exists($typeName) && is_subclass_of($typeName, \Nex\Validation\FormRequest::class)) {
+                    $serverRequest = $parameters[\Psr\Http\Message\ServerRequestInterface::class]
+                        ?? $parameters['request']
+                        ?? $this->make(\Psr\Http\Message\ServerRequestInterface::class);
+                    $dependencies[] = new $typeName($serverRequest);
                     continue;
                 }
 
@@ -275,6 +283,12 @@ class Container implements ContainerInterface
                     }
                     throw $e;
                 }
+            }
+
+            // Override by name for primitives / untyped
+            if (array_key_exists($name, $parameters)) {
+                $dependencies[] = $parameters[$name];
+                continue;
             }
 
             if ($parameter->isDefaultValueAvailable()) {

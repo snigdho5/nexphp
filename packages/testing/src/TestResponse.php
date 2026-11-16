@@ -75,12 +75,24 @@ class TestResponse
      */
     public function assertJson(array $expected): static
     {
-        $actual = $this->json();
+        $this->assertArraySubset($expected, $this->json());
+        return $this;
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     * @param array<string, mixed> $actual
+     */
+    private function assertArraySubset(array $expected, array $actual): void
+    {
         foreach ($expected as $key => $value) {
             Assert::assertArrayHasKey($key, $actual, "Missing expected JSON key [$key].");
-            Assert::assertSame($value, $actual[$key], "Mismatch for JSON key [$key].");
+            if (is_array($value) && is_array($actual[$key])) {
+                $this->assertArraySubset($value, $actual[$key]);
+            } else {
+                Assert::assertSame($value, $actual[$key], "Mismatch for JSON key [$key].");
+            }
         }
-        return $this;
     }
 
     public function assertHeader(string $name, string $expected): static

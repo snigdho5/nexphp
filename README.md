@@ -13,8 +13,9 @@ NexPHP is built with a hybrid architecture:
 - **Standards first**: Built on PSR-3, PSR-4, PSR-7, PSR-11, PSR-15, PSR-17, and Composer.
 - **AI & Vibe-Coding Optimized**: Strict types, declarative attributes (`#[Route]`, `#[Middleware]`), self-describing DTOs, and self-healing error diagnostics.
 
-## Monorepo Packages (Phase 1)
+## Monorepo Packages
 
+### Phase 1: Core Foundation
 | Package | Namespace | Purpose |
 | :--- | :--- | :--- |
 | `packages/contracts` | `Nex\Contracts` | Shared interfaces, PSR compliance, value contracts |
@@ -28,6 +29,33 @@ NexPHP is built with a hybrid architecture:
 | `packages/runtime-fpm` | `Nex\Runtime\Fpm` | Standard PHP-FPM entry runner |
 | `packages/console` | `Nex\Console` | Lightweight CLI commands (`serve`, `route:list`, `about`) |
 | `packages/testing` | `Nex\Testing` | In-memory HTTP test client, test assertions |
+
+### Phase 2: Application Essentials
+| Package | Namespace | Purpose |
+| :--- | :--- | :--- |
+| `packages/database-contracts` | `Nex\Database\Contracts` | Connection, query builder, and manager interfaces |
+| `packages/database` | `Nex\Database` | PDO connection manager, query builder, transactions, Active Record Model |
+| `packages/database-migrations` | `Nex\Database\Migrations` | Schema builder (`Blueprint`), migration runner, rollback |
+| `packages/validation` | `Nex\Validation` | Validation rules engine, `FormRequest` validation, 422 JSON errors |
+| `packages/auth-contracts` | `Nex\Auth\Contracts` | Authenticatable, guard, and user provider contracts |
+| `packages/auth` | `Nex\Auth` | Password hashing (Bcrypt), Database provider, Token guard, Authenticate middleware |
+| `packages/authorization` | `Nex\Authorization` | Gate, policy resolution, abilities, Authorize middleware |
+
+---
+
+## CLI Commands
+
+```bash
+php bin/nex about             # System & framework info
+php bin/nex route:list        # View registered routes
+php bin/nex serve             # Start local dev server
+php bin/nex make:migration    # Create timestamped migration file
+php bin/nex migrate           # Run pending migrations
+php bin/nex migrate:rollback  # Rollback last migration batch
+php bin/nex make:model        # Scaffold an Active Record Model
+php bin/nex make:request      # Scaffold a FormRequest validator
+php bin/nex make:policy       # Scaffold an Authorization Policy
+```
 
 ---
 

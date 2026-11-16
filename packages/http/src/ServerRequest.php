@@ -268,7 +268,22 @@ class ServerRequest implements ServerRequestInterface
 
     public function getParsedBody(): array|object|null
     {
-        return $this->parsedBody;
+        if ($this->parsedBody !== null) {
+            return $this->parsedBody;
+        }
+
+        $contentType = $this->getHeaderLine('Content-Type');
+        if (str_contains(strtolower($contentType), 'application/json')) {
+            $body = (string) $this->stream;
+            if ($body !== '') {
+                $decoded = json_decode($body, true);
+                if (is_array($decoded)) {
+                    return $this->parsedBody = $decoded;
+                }
+            }
+        }
+
+        return null;
     }
 
     public function withParsedBody(mixed $data): static

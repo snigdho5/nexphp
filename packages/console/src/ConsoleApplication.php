@@ -56,6 +56,12 @@ class ConsoleApplication
         $this->add(new AboutCommand($this->app, $this->output));
         $this->add(new RouteListCommand($this->app, $this->output));
         $this->add(new ServeCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeMigrationCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MigrateCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MigrateRollbackCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeModelCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeRequestCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakePolicyCommand($this->app, $this->output));
     }
 
     private function printHelp(): void

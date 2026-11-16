@@ -25,6 +25,13 @@
             "Nex\\Runtime\\Contracts\\": "packages/runtime-contracts/src/",
             "Nex\\Runtime\\Fpm\\": "packages/runtime-fpm/src/",
             "Nex\\Console\\": "packages/console/src/",
+            "Nex\\Database\\Contracts\\": "packages/database-contracts/src/",
+            "Nex\\Database\\": "packages/database/src/",
+            "Nex\\Database\\Migrations\\": "packages/database-migrations/src/",
+            "Nex\\Validation\\": "packages/validation/src/",
+            "Nex\\Auth\\Contracts\\": "packages/auth-contracts/src/",
+            "Nex\\Auth\\": "packages/auth/src/",
+            "Nex\\Authorization\\": "packages/authorization/src/",
             "Nex\\Testing\\": "packages/testing/src/"
         }
     },
