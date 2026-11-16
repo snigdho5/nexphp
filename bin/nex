@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// Locate composer autoload
+$autoloadFiles = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+];
+
+$loaded = false;
+foreach ($autoloadFiles as $file) {
+    if (file_exists($file)) {
+        require $file;
+        $loaded = true;
+        break;
+    }
+}
+
+if (!$loaded) {
+    fwrite(STDERR, "Could not find vendor/autoload.php. Run 'composer install' first." . PHP_EOL);
+    exit(1);
+}
+
+use Nex\Console\ConsoleApplication;
+use Nex\Foundation\Application;
+
+$app = Application::create(dirname(__DIR__));
+$console = new ConsoleApplication($app);
+
+exit($console->run($argv));

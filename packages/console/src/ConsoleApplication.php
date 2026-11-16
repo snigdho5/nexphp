@@ -1,0 +1,75 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Nex\Console;
+
+use Nex\Console\Commands\AboutCommand;
+use Nex\Console\Commands\RouteListCommand;
+use Nex\Console\Commands\ServeCommand;
+use Nex\Foundation\Application;
+
+class ConsoleApplication
+{
+    /**
+     * @var array<string, Command>
+     */
+    private array $commands = [];
+    private Output $output;
+
+    public function __construct(private Application $app, ?Output $output = null)
+    {
+        $this->output = $output ?? new Output();
+        $this->registerDefaultCommands();
+    }
+
+    public function add(Command $command): static
+    {
+        $this->commands[$command->getName()] = $command;
+        return $this;
+    }
+
+    /**
+     * @param list<string> $argv
+     */
+    public function run(array $argv = []): int
+    {
+        $commandName = $argv[1] ?? 'about';
+
+        if ($commandName === '--help' || $commandName === '-h' || $commandName === 'list') {
+            $this->printHelp();
+            return 0;
+        }
+
+        if (!isset($this->commands[$commandName])) {
+            $this->output->error("Command [$commandName] not found.");
+            $this->printHelp();
+            return 1;
+        }
+
+        $command = $this->commands[$commandName];
+        return $command->execute(array_slice($argv, 2));
+    }
+
+    private function registerDefaultCommands(): void
+    {
+        $this->add(new AboutCommand($this->app, $this->output));
+        $this->add(new RouteListCommand($this->app, $this->output));
+        $this->add(new ServeCommand($this->app, $this->output));
+    }
+
+    private function printHelp(): void
+    {
+        $this->output->writeln("NexPHP Framework CLI " . $this->app->version());
+        $this->output->writeln();
+        $this->output->writeln("Usage: php bin/nex <command> [options]");
+        $this->output->writeln();
+        $this->output->writeln("Available commands:");
+
+        foreach ($this->commands as $name => $cmd) {
+            $this->output->writeln(sprintf("  \033[32m%-16s\033[0m %s", $name, $cmd->getDescription()));
+        }
+
+        $this->output->writeln();
+    }
+}

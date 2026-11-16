@@ -1,0 +1,42 @@
+{
+    "name": "nexphp/nexphp",
+    "description": "NexPHP — Next-generation PHP framework designed for modern runtimes, developer ergonomics, and AI vibe-coding",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.3",
+        "psr/container": "^2.0",
+        "psr/http-message": "^2.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nex\\Contracts\\": "packages/contracts/src/",
+            "Nex\\Container\\": "packages/container/src/",
+            "Nex\\Config\\": "packages/config/src/",
+            "Nex\\Http\\": "packages/http/src/",
+            "Nex\\Routing\\": "packages/routing/src/",
+            "Nex\\Middleware\\": "packages/middleware/src/",
+            "Nex\\Foundation\\": "packages/foundation/src/",
+            "Nex\\Runtime\\Contracts\\": "packages/runtime-contracts/src/",
+            "Nex\\Runtime\\Fpm\\": "packages/runtime-fpm/src/",
+            "Nex\\Console\\": "packages/console/src/",
+            "Nex\\Testing\\": "packages/testing/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nex\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
