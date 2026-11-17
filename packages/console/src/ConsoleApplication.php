@@ -62,6 +62,8 @@ class ConsoleApplication
         $this->add(new \Nex\Console\Commands\MakeModelCommand($this->app, $this->output));
         $this->add(new \Nex\Console\Commands\MakeRequestCommand($this->app, $this->output));
         $this->add(new \Nex\Console\Commands\MakePolicyCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\WorkerRunCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\RuntimeDiagnosticsCommand($this->app, $this->output));
     }
 
     private function printHelp(): void
