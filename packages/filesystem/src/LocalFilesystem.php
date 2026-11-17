@@ -210,23 +210,41 @@ final class LocalFilesystem implements FilesystemInterface
             return $this->root;
         }
 
-        // Remove leading slashes and normalize separators
-        $normalized = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, ltrim($path, '/\\'));
-        $full = $this->root . DIRECTORY_SEPARATOR . $normalized;
+        // Normalize separators and clean null bytes
+        $cleanPath = str_replace("\0", '', $path);
+        $normalized = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $cleanPath);
 
-        // Resolve without requiring it to exist first
-        $real = realpath(dirname($full));
-        $resolved = ($real !== false ? $real : dirname($full)) . DIRECTORY_SEPARATOR . basename($full);
-        $resolved = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $resolved);
+        // Canonical segment stack normalization (independent of disk existence)
+        $parts = explode(DIRECTORY_SEPARATOR, $normalized);
+        $stack = [];
 
-        if (!str_starts_with($resolved, $this->root . DIRECTORY_SEPARATOR) && $resolved !== $this->root) {
+        foreach ($parts as $part) {
+            if ($part === '' || $part === '.') {
+                continue;
+            }
+            if ($part === '..') {
+                if (empty($stack)) {
+                    throw new RuntimeException(
+                        "Path traversal detected: [{$path}] resolves outside storage root. " .
+                        "Only paths within the configured storage root are allowed."
+                    );
+                }
+                array_pop($stack);
+            } else {
+                $stack[] = $part;
+            }
+        }
+
+        $canonical = $this->root . (empty($stack) ? '' : DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $stack));
+
+        if (!str_starts_with($canonical, $this->root . DIRECTORY_SEPARATOR) && $canonical !== $this->root) {
             throw new RuntimeException(
                 "Path traversal detected: [{$path}] resolves outside storage root. " .
                 "Only paths within the configured storage root are allowed."
             );
         }
 
-        return $resolved;
+        return $canonical;
     }
 
     private function deleteRecursively(string $dir): void

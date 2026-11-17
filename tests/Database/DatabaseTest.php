@@ -91,6 +91,14 @@ class DatabaseTest extends TestCase
         $this->assertSame(0, $count);
     }
 
+    public function testSqlOperatorInjectionIsPrevented(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Illegal SQL operator');
+
+        $this->connection->table('users')->where('name', 'OR 1=1 --', 'value')->get();
+    }
+
     public function testActiveRecordModel(): void
     {
         $user = UserModel::create([

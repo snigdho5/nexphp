@@ -48,9 +48,17 @@ final class CsrfMiddleware implements MiddlewareInterface
             ? ($this->tokenOrProvider)()
             : (string) $this->tokenOrProvider;
 
+        // Fail-closed: Empty or uninitialized tokens cannot authorize state-changing requests
+        if ($expected === '' || trim($expected) === '') {
+            return new JsonResponse([
+                'error'   => 'CSRF verification failed',
+                'message' => 'CSRF verification failed. The expected token is uninitialized or empty.',
+            ], 403);
+        }
+
         $provided = $this->extractToken($request);
 
-        if ($provided === null || !hash_equals($expected, $provided)) {
+        if ($provided === null || $provided === '' || !hash_equals($expected, $provided)) {
             return new JsonResponse([
                 'error'   => 'CSRF token mismatch',
                 'message' => 'CSRF verification failed. The provided token is invalid or missing.',

@@ -19,11 +19,19 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 final class ThrottleRequestsMiddleware implements MiddlewareInterface
 {
+    /**
+     * @param RateLimiter $limiter
+     * @param int $maxAttempts
+     * @param int $decaySeconds
+     * @param string|null $prefix
+     * @param list<string>|bool $trustedProxies True to trust all proxies, false to trust none, or list of trusted proxy IPs
+     */
     public function __construct(
         private readonly RateLimiter $limiter,
         private readonly int $maxAttempts = 60,
         private readonly int $decaySeconds = 60,
         private readonly ?string $prefix = 'throttle',
+        private readonly array|bool $trustedProxies = false,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -56,18 +64,34 @@ final class ThrottleRequestsMiddleware implements MiddlewareInterface
 
     private function resolveRequestSignature(ServerRequestInterface $request): string
     {
-        // Use client IP or fallback
         $serverParams = $request->getServerParams();
-        $ip = $serverParams['REMOTE_ADDR'] ?? '127.0.0.1';
+        $remoteAddr = $serverParams['REMOTE_ADDR'] ?? '127.0.0.1';
+        $ip = $remoteAddr;
 
-        $forwarded = $request->getHeaderLine('X-Forwarded-For');
-        if ($forwarded !== '') {
-            $parts = explode(',', $forwarded);
-            $ip = trim($parts[0]);
+        // Only inspect X-Forwarded-For if proxy is trusted
+        if ($this->isProxyTrusted($remoteAddr)) {
+            $forwarded = $request->getHeaderLine('X-Forwarded-For');
+            if ($forwarded !== '') {
+                $parts = explode(',', $forwarded);
+                $ip = trim($parts[0]);
+            }
         }
 
         $route = $request->getUri()->getPath();
 
         return ($this->prefix !== null ? $this->prefix . ':' : '') . sha1($ip . '|' . $route);
+    }
+
+    private function isProxyTrusted(string $remoteAddr): bool
+    {
+        if ($this->trustedProxies === true) {
+            return true;
+        }
+
+        if (is_array($this->trustedProxies)) {
+            return in_array($remoteAddr, $this->trustedProxies, true);
+        }
+
+        return false;
     }
 }

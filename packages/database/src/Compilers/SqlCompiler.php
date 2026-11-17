@@ -8,6 +8,13 @@ use InvalidArgumentException;
 
 class SqlCompiler
 {
+    protected const array ALLOWED_OPERATORS = [
+        '=', '!=', '<>', '<', '<=', '>', '>=',
+        'LIKE', 'NOT LIKE', 'ILIKE', 'NOT ILIKE',
+        'REGEXP', 'NOT REGEXP', 'RLIKE',
+        '&', '|', '^', '<<', '>>',
+    ];
+
     public function __construct(protected string $driver = 'sqlite')
     {
     }
@@ -141,7 +148,7 @@ class SqlCompiler
             $col = $this->wrap($where['column']);
 
             $clause = match ($where['type']) {
-                'basic' => "$col {$where['operator']} ?",
+                'basic' => $this->compileBasicWhere($col, (string) $where['operator']),
                 'null' => "$col IS NULL",
                 'not_null' => "$col IS NOT NULL",
                 'in' => "$col IN (" . implode(', ', array_fill(0, count($where['values'] ?? []), '?')) . ")",
@@ -152,5 +159,15 @@ class SqlCompiler
         }
 
         return implode(' AND ', $clauses);
+    }
+
+    private function compileBasicWhere(string $col, string $operator): string
+    {
+        $normalized = strtoupper(trim($operator));
+        if (!in_array($normalized, self::ALLOWED_OPERATORS, true)) {
+            throw new InvalidArgumentException("Illegal SQL operator: [{$operator}]");
+        }
+
+        return "$col $normalized ?";
     }
 }

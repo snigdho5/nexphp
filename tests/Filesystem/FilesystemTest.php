@@ -120,4 +120,16 @@ final class FilesystemTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->filesystem->read('../../etc/passwd');
     }
+
+    public function test_path_traversal_on_non_existent_subdirs_is_prevented(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->filesystem->write('non_existent/../../etc/cron.d/malicious', 'exploit');
+    }
+
+    public function test_path_traversal_with_null_bytes_is_prevented(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->filesystem->write("test\0/../../escaped.txt", 'exploit');
+    }
 }

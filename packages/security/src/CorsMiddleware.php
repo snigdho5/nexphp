@@ -35,7 +35,14 @@ final class CorsMiddleware implements MiddlewareInterface
         private readonly array $exposedHeaders = ['X-Request-Id'],
         private readonly bool $allowCredentials = false,
         private readonly int $maxAge = 86400,
-    ) {}
+    ) {
+        if ($this->allowCredentials && $this->allowedOrigins === ['*']) {
+            throw new \InvalidArgumentException(
+                "Insecure CORS configuration: Wildcard origin ['*'] cannot be used when allowCredentials is true. " .
+                "Explicitly declare the trusted origins (e.g. ['https://app.example.com']) to allow credentials safely."
+            );
+        }
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -66,8 +73,8 @@ final class CorsMiddleware implements MiddlewareInterface
     private function resolveAllowedOrigin(string $origin): ?string
     {
         if (in_array('*', $this->allowedOrigins, true)) {
-            // If credentials are true, cannot use wildcard '*' per CORS spec
-            return $this->allowCredentials ? $origin : '*';
+            // Wildcard '*' is only permitted when credentials are false
+            return $this->allowCredentials ? null : '*';
         }
 
         foreach ($this->allowedOrigins as $allowed) {

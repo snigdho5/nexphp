@@ -75,15 +75,20 @@ final class SmtpMailer implements MailerInterface
 
     private function buildHeaders(Mailable $mail, string $fromEmail, string $fromName, string $boundary): string
     {
+        $fromEmail = $this->sanitizeHeader($fromEmail);
+        $fromName = $this->sanitizeHeader($fromName);
+
         $to = implode(', ', array_map(
-            fn ($r) => $r['name'] !== '' ? "\"{$r['name']}\" <{$r['email']}>" : $r['email'],
+            fn ($r) => $r['name'] !== ''
+                ? "\"{$this->sanitizeHeader($r['name'])}\" <{$this->sanitizeHeader($r['email'])}>"
+                : $this->sanitizeHeader($r['email']),
             $mail->getTo(),
         ));
 
         $lines = [
             "From: " . ($fromName !== '' ? "\"{$fromName}\" <{$fromEmail}>" : $fromEmail),
             "To: {$to}",
-            "Subject: " . $mail->getSubject(),
+            "Subject: " . $this->sanitizeHeader($mail->getSubject()),
             "MIME-Version: 1.0",
             "Content-Type: multipart/alternative; boundary=\"{$boundary}\"",
             "Date: " . date('r'),
@@ -91,10 +96,17 @@ final class SmtpMailer implements MailerInterface
         ];
 
         foreach ($mail->getHeaders() as $name => $value) {
-            $lines[] = "{$name}: {$value}";
+            $safeName = $this->sanitizeHeader((string) $name);
+            $safeValue = $this->sanitizeHeader((string) $value);
+            $lines[] = "{$safeName}: {$safeValue}";
         }
 
         return implode("\r\n", $lines);
+    }
+
+    private function sanitizeHeader(string $value): string
+    {
+        return str_replace(["\r", "\n"], '', $value);
     }
 
     private function buildBody(Mailable $mail, string $boundary): string

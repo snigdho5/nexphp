@@ -77,6 +77,14 @@ final class SecurityTest extends TestCase
         $this->assertSame('*', $response->getHeaderLine('Access-Control-Allow-Origin'));
     }
 
+    public function test_cors_rejects_wildcard_origin_when_credentials_enabled(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Wildcard origin ['*'] cannot be used when allowCredentials is true");
+
+        new CorsMiddleware(allowedOrigins: ['*'], allowCredentials: true);
+    }
+
     // -------------------------------------------------------------------------
     // CSRF Tests
     // -------------------------------------------------------------------------
@@ -128,6 +136,16 @@ final class SecurityTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
+    public function test_csrf_fails_closed_when_expected_token_is_empty(): void
+    {
+        // If session returns empty string, an empty request header must NOT authorize the request
+        $middleware = new CsrfMiddleware('');
+        $request = new ServerRequest('POST', '/profile', headers: ['X-CSRF-TOKEN' => '']);
+
+        $response = $middleware->process($request, $this->createHandler());
+        $this->assertSame(403, $response->getStatusCode());
+    }
+
     // -------------------------------------------------------------------------
     // Rate Limiter & Throttle Tests
     // -------------------------------------------------------------------------
@@ -168,6 +186,41 @@ final class SecurityTest extends TestCase
         $res3 = $middleware->process($request, $this->createHandler());
         $this->assertSame(429, $res3->getStatusCode());
         $this->assertTrue($res3->hasHeader('Retry-After'));
+    }
+
+    public function test_throttle_ignores_spoofed_forwarded_for_by_default(): void
+    {
+        $limiter = new RateLimiter();
+        $middleware = new ThrottleRequestsMiddleware($limiter, maxAttempts: 1, decaySeconds: 60);
+
+        // Untrusted proxy sends spoofed X-Forwarded-For
+        $req1 = new ServerRequest('GET', '/api/resource', headers: ['X-Forwarded-For' => '1.1.1.1'], serverParams: ['REMOTE_ADDR' => '203.0.113.5']);
+        $res1 = $middleware->process($req1, $this->createHandler());
+        $this->assertSame(200, $res1->getStatusCode());
+
+        // Same client attempts to bypass limit using different fake X-Forwarded-For: 2.2.2.2
+        $req2 = new ServerRequest('GET', '/api/resource', headers: ['X-Forwarded-For' => '2.2.2.2'], serverParams: ['REMOTE_ADDR' => '203.0.113.5']);
+        $res2 = $middleware->process($req2, $this->createHandler());
+
+        // Must be throttled based on real REMOTE_ADDR
+        $this->assertSame(429, $res2->getStatusCode());
+    }
+
+    public function test_throttle_respects_forwarded_for_from_trusted_proxies(): void
+    {
+        $limiter = new RateLimiter();
+        // Trust reverse proxy at 10.0.0.1
+        $middleware = new ThrottleRequestsMiddleware($limiter, maxAttempts: 1, decaySeconds: 60, trustedProxies: ['10.0.0.1']);
+
+        // Client A behind trusted proxy
+        $req1 = new ServerRequest('GET', '/api/resource', headers: ['X-Forwarded-For' => '198.51.100.1'], serverParams: ['REMOTE_ADDR' => '10.0.0.1']);
+        $res1 = $middleware->process($req1, $this->createHandler());
+        $this->assertSame(200, $res1->getStatusCode());
+
+        // Client B behind same trusted proxy has their own distinct limit
+        $req2 = new ServerRequest('GET', '/api/resource', headers: ['X-Forwarded-For' => '198.51.100.2'], serverParams: ['REMOTE_ADDR' => '10.0.0.1']);
+        $res2 = $middleware->process($req2, $this->createHandler());
+        $this->assertSame(200, $res2->getStatusCode());
     }
 
     // -------------------------------------------------------------------------
