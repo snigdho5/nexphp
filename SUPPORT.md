@@ -25,6 +25,8 @@ NexPHP is tested and maintained across the following environments:
 
 ## Community & Resources
 
+- **Official Website:** [https://nexphp.com](https://nexphp.com)
+- **Contact Email:** `mail@nexphp.com`
 - **GitHub Issues:** Bug reports and feature discussions.
-- **Security Vulnerabilities:** Follow [SECURITY.md](file:///Users/snigdho/dev/php-projects/nexphp/SECURITY.md) (email `security@nexphp.dev`).
-- **Documentation:** Available in the `docs/` folder and official documentation site.
+- **Security Vulnerabilities:** Follow [SECURITY.md](file:///Users/snigdho/dev/php-projects/nexphp/SECURITY.md) (email `mail@nexphp.com`).
+- **Documentation:** Available in the `docs/` folder and on [https://nexphp.com](https://nexphp.com).

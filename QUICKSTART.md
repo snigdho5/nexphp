@@ -179,6 +179,8 @@ php bin/nex runtime:diagnostics               # Memory & runtime diagnostics
 
 ## 5. Further Reading
 
+- **Official Website:** [https://nexphp.com](https://nexphp.com)
+- **Contact & Community:** [mail@nexphp.com](mailto:mail@nexphp.com)
 - [AI Vibe Coding Guide](file:///Users/snigdho/dev/php-projects/nexphp/docs/ai-vibe-coding-guide.md) — How to prompt AI models (Cursor, Copilot, ChatGPT) for NexPHP.
 - [Architecture & Dual Runtimes](file:///Users/snigdho/dev/php-projects/nexphp/docs/architecture-and-runtimes.md) — Persistent worker safety & Fibers.
 - [CLI Reference](file:///Users/snigdho/dev/php-projects/nexphp/docs/cli-reference.md) — Guide to all 23 CLI commands.

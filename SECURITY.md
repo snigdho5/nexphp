@@ -18,7 +18,8 @@ We take the security of NexPHP and its users very seriously. If you believe you 
 **Do NOT report security vulnerabilities via public GitHub issues.**
 
 Instead, please report security vulnerabilities via private security advisory on GitHub or email:
-- **Email:** `security@nexphp.dev`
+- **Email:** `mail@nexphp.com`
+- **Website:** [https://nexphp.com](https://nexphp.com)
 
 ### What to include in your report:
 1. Detailed description of the vulnerability and attack vector.

@@ -3,12 +3,15 @@
 > **Less code. More power. Zero magic.**  
 > A next-generation PHP framework designed for modern runtimes (PHP-FPM & persistent workers), developer ergonomics, and AI "vibe coding".
 
+[![Website](https://img.shields.io/badge/Website-nexphp.com-purple)](https://nexphp.com)
 [![Packagist Version](https://img.shields.io/packagist/v/nexphp/nexphp?color=orange)](https://packagist.org/packages/nexphp/nexphp)
 [![Total Downloads](https://img.shields.io/packagist/dt/nexphp/nexphp?color=blue)](https://packagist.org/packages/nexphp/nexphp)
 [![Quickstart Guide](https://img.shields.io/badge/Quickstart-3_Minute_Guide-brightgreen)](file:///Users/snigdho/dev/php-projects/nexphp/QUICKSTART.md)
 [![Tests](https://img.shields.io/badge/tests-143%20passed-success)](file:///Users/snigdho/dev/php-projects/nexphp/tests)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.3-blue)](https://www.php.net)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](file:///Users/snigdho/dev/php-projects/nexphp/LICENSE)
+
+🌐 **Official Website:** [https://nexphp.com](https://nexphp.com) | ✉️ **Contact:** [mail@nexphp.com](mailto:mail@nexphp.com)
 
 ## Quick Install
 

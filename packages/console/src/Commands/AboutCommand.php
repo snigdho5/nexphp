@@ -19,6 +19,7 @@ class AboutCommand extends Command
         $rows = [
             ['NexPHP Version', $this->app->version()],
             ['PHP Version', PHP_VERSION],
+            ['Website', 'https://nexphp.com'],
             ['Environment', (string) $this->app->config('app.env', 'production')],
             ['Debug Mode', $this->app->config('app.debug', false) ? 'ENABLED' : 'DISABLED'],
             ['Operating System', PHP_OS_FAMILY . ' (' . php_uname('m') . ')'],

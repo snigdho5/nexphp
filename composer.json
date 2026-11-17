@@ -3,10 +3,17 @@
     "description": "NexPHP — Next-generation PHP framework designed for modern runtimes, developer ergonomics, and AI vibe-coding",
     "type": "project",
     "license": "MIT",
+    "homepage": "https://nexphp.com",
+    "support": {
+        "email": "mail@nexphp.com",
+        "source": "https://github.com/snigdho5/nexphp",
+        "docs": "https://nexphp.com"
+    },
     "authors": [
         {
             "name": "snigdho",
-            "homepage": "https://github.com/snigdho5"
+            "email": "mail@nexphp.com",
+            "homepage": "https://nexphp.com"
         }
     ],
     "require": {
