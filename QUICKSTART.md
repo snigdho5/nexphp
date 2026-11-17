@@ -12,24 +12,38 @@ This guide gets you up and running with a new **NexPHP** project in under 3 minu
 
 ---
 
-## 2. Option A: Create a Full Application Skeleton (Recommended)
+## 2. Option A: Create a Project via Composer (Recommended)
 
-Generate a clean, production-ready application layout using the `nex new` command:
+Run the standard Composer `create-project` command from anywhere in your terminal:
 
 ```bash
-# 1. Clone NexPHP (or install via composer)
-git clone git@github.com:snigdho5/nexphp.git
-cd nexphp
-composer install
+# 1. Create a brand new project
+composer create-project nexphp/nexphp my-api
 
-# 2. Scaffold your new project
+# 2. Enter project directory
+cd my-api
+
+# 3. Start the development server
+php bin/nex serve
+```
+
+Your server starts immediately at `http://127.0.0.1:8000`.
+
+---
+
+## 3. Option B: Create via the CLI (`nex new`)
+
+If you have cloned the framework or have `nex` in your PATH:
+
+```bash
+# Scaffold your new project
 php bin/nex new my-app
 
-# 3. Enter your project directory
+# Enter your project directory
 cd my-app
 composer install
 
-# 4. Start local development server
+# Start local development server
 php ../bin/nex serve
 ```
 

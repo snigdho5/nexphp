@@ -3,11 +3,25 @@
 > **Less code. More power. Zero magic.**  
 > A next-generation PHP framework designed for modern runtimes (PHP-FPM & persistent workers), developer ergonomics, and AI "vibe coding".
 
+[![Packagist Version](https://img.shields.io/packagist/v/nexphp/nexphp?color=orange)](https://packagist.org/packages/nexphp/nexphp)
+[![Total Downloads](https://img.shields.io/packagist/dt/nexphp/nexphp?color=blue)](https://packagist.org/packages/nexphp/nexphp)
 [![Quickstart Guide](https://img.shields.io/badge/Quickstart-3_Minute_Guide-brightgreen)](file:///Users/snigdho/dev/php-projects/nexphp/QUICKSTART.md)
 [![Tests](https://img.shields.io/badge/tests-143%20passed-success)](file:///Users/snigdho/dev/php-projects/nexphp/tests)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.3-blue)](https://www.php.net)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](file:///Users/snigdho/dev/php-projects/nexphp/LICENSE)
 
-👉 **New here? Check out the [QUICKSTART.md](file:///Users/snigdho/dev/php-projects/nexphp/QUICKSTART.md) guide to create your first app in under 3 minutes!**
+## Quick Install
+
+Create a brand new NexPHP project with a single command:
+
+```bash
+composer create-project nexphp/nexphp my-api
+cd my-api
+php bin/nex serve
+```
+Your server starts immediately at `http://127.0.0.1:8000`.
+
+👉 **For the complete walkthrough, see the [QUICKSTART.md](file:///Users/snigdho/dev/php-projects/nexphp/QUICKSTART.md) guide!**
 
 ---
 

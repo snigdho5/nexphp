@@ -4,9 +4,17 @@ Welcome to NexPHP — the next-generation PHP framework engineered for modern ru
 
 ---
 
-## 1. Quickstart (Under 5 Minutes)
+## 1. Quickstart (Under 3 Minutes)
 
-### Option A: Create a New Project with CLI
+### Option A: Install via Composer (Recommended)
+```bash
+composer create-project nexphp/nexphp my-api
+cd my-api
+php bin/nex serve
+```
+Your server starts immediately at `http://127.0.0.1:8000`.
+
+### Option B: Scaffold with CLI (`nex new`)
 ```bash
 # Clone the repository
 git clone git@github.com:snigdho5/nexphp.git
@@ -16,9 +24,9 @@ composer install
 # Scaffold your new application
 php bin/nex new my-api
 cd my-api
-php bin/nex serve
+composer install
+php ../bin/nex serve
 ```
-Your server will start at `http://127.0.0.1:8000`.
 
 ---
 
