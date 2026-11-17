@@ -100,7 +100,35 @@ php bin/nex make:event           # Scaffold an Event class
 php bin/nex make:listener        # Scaffold an Event Listener class
 php bin/nex make:mail            # Scaffold a Mailable class
 php bin/nex make:notification    # Scaffold a Notification class
+php bin/nex new <name>           # Create a new application skeleton
+php bin/nex make:controller      # Scaffold a Controller class
+php bin/nex make:middleware      # Scaffold a PSR-15 Middleware class
+php bin/nex make:provider        # Scaffold a Service Provider class
+php bin/nex test                 # Run test suite with PHPUnit
 ```
+
+---
+
+## Reference Applications
+
+Explore fully working real-world implementations in `examples/`:
+- **[Minimal API](file:///Users/snigdho/dev/php-projects/nexphp/examples/minimal-api/index.php)**: Attribute routing, input validation, and SQLite database.
+- **[SaaS Business Workflow](file:///Users/snigdho/dev/php-projects/nexphp/examples/business-app/app.php)**: Auth, Gate policies, Events, Queue jobs, Mail notifications, and Redacted logging.
+- **[High-Concurrency Worker](file:///Users/snigdho/dev/php-projects/nexphp/examples/worker-app/app.php)**: Persistent worker with Fiber cooperative concurrency and runtime diagnostics.
+
+---
+
+## Documentation
+
+- **[Getting Started Guide](file:///Users/snigdho/dev/php-projects/nexphp/docs/getting-started.md)**: 5-minute install & micro-app setup.
+- **[AI Vibe Coding Guide](file:///Users/snigdho/dev/php-projects/nexphp/docs/ai-vibe-coding-guide.md)**: Prompting tips, attributes, and FormRequest patterns.
+- **[Architecture & Dual Runtimes](file:///Users/snigdho/dev/php-projects/nexphp/docs/architecture-and-runtimes.md)**: FPM vs Persistent Workers vs FrankenPHP.
+- **[CLI Reference](file:///Users/snigdho/dev/php-projects/nexphp/docs/cli-reference.md)**: All 23 CLI commands with examples.
+- **[Production & Security Guide](file:///Users/snigdho/dev/php-projects/nexphp/docs/security-and-production.md)**: Hardening checklist and daemon setups.
+- **[Security Policy](file:///Users/snigdho/dev/php-projects/nexphp/SECURITY.md)**: Vulnerability disclosure & SLA.
+- **[Contributing](file:///Users/snigdho/dev/php-projects/nexphp/CONTRIBUTING.md)**: Guidelines, standards, and PR process.
+- **[Support & Compatibility](file:///Users/snigdho/dev/php-projects/nexphp/SUPPORT.md)**: Version support matrix.
+- **[Governance](file:///Users/snigdho/dev/php-projects/nexphp/GOVERNANCE.md)**: RFC process and SemVer rules.
 
 ---
 

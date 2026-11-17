@@ -42,7 +42,14 @@ class ConsoleApplication
         }
 
         if (!isset($this->commands[$commandName])) {
-            $this->output->error("Command [$commandName] not found.");
+            $this->output->error("Command [{$commandName}] not found.");
+
+            $suggestion = $this->findClosestCommand($commandName);
+            if ($suggestion !== null) {
+                $this->output->writeln("  Did you mean \033[33m{$suggestion}\033[0m?");
+                $this->output->writeln();
+            }
+
             $this->printHelp();
             return 1;
         }
@@ -73,6 +80,28 @@ class ConsoleApplication
         $this->add(new \Nex\Console\Commands\MakeListenerCommand($this->app, $this->output));
         $this->add(new \Nex\Console\Commands\MakeMailCommand($this->app, $this->output));
         $this->add(new \Nex\Console\Commands\MakeNotificationCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\NewCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeControllerCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeMiddlewareCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeProviderCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\TestCommand($this->app, $this->output));
+    }
+
+    private function findClosestCommand(string $input): ?string
+    {
+        $bestMatch = null;
+        $shortestDistance = -1;
+
+        foreach (array_keys($this->commands) as $commandName) {
+            $distance = levenshtein($input, $commandName);
+
+            if ($distance <= 3 && ($shortestDistance < 0 || $distance < $shortestDistance)) {
+                $shortestDistance = $distance;
+                $bestMatch = $commandName;
+            }
+        }
+
+        return $bestMatch;
     }
 
     private function printHelp(): void

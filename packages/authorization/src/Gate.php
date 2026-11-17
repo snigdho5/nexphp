@@ -22,9 +22,20 @@ class Gate implements GateInterface
      */
     private array $policies = [];
 
+    private mixed $resolvedUser = null;
+    private bool $hasCustomUser = false;
+
     public function __construct(
         private ?AuthManagerInterface $auth = null
     ) {
+    }
+
+    public function forUser(mixed $user): static
+    {
+        $clone = clone $this;
+        $clone->resolvedUser = $user;
+        $clone->hasCustomUser = true;
+        return $clone;
     }
 
     public function define(string $ability, callable $callback): static
@@ -75,8 +86,12 @@ class Gate implements GateInterface
         }
     }
 
-    private function resolveUser(): ?AuthenticatableInterface
+    private function resolveUser(): mixed
     {
+        if ($this->hasCustomUser) {
+            return $this->resolvedUser;
+        }
+
         return $this->auth?->user();
     }
 
