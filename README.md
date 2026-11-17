@@ -66,6 +66,15 @@ NexPHP is built with a hybrid architecture:
 | `packages/mail` | `Nex\Mail` | Mailable message builder, SmtpMailer (raw socket), LogMailer (dev/test) |
 | `packages/notifications` | `Nex\Notifications` | Multi-channel notifications (`mail`, `database`), Notifiable trait |
 
+### Phase 5: Production Readiness, Security & Observability
+| Package | Namespace | Purpose |
+| :--- | :--- | :--- |
+| `packages/security` | `Nex\Security` | CORS, CSRF verification, RateLimiter sliding window, Throttling, Request size caps |
+| `packages/logging` | `Nex\Logging` | PSR-3 structured JSON logger, automatic sensitive data redaction, HTTP access logging |
+| `packages/metrics` | `Nex\Metrics` | Counters, Gauges, Histograms, Prometheus text exposition exporter |
+| `packages/health` | `Nex\Health` | Liveness & Readiness checks, Database, Storage, and Queue operational probes |
+| `packages/resilience` | `Nex\Resilience` | Circuit Breaker (CLOSED/OPEN/HALF_OPEN), bounded exponential retries with jitter |
+
 ---
 
 ## CLI Commands
@@ -95,13 +104,13 @@ php bin/nex make:notification    # Scaffold a Notification class
 
 ---
 
-## Performance Benchmarks
+## Performance & Reliability Benchmarks
 
-Run `php benchmarks/RuntimeBenchmark.php` to measure performance:
 - **Application Boot Time:** ~2.8 ms
 - **Throughput:** ~218,000 req/sec (in-memory persistent worker)
 - **Fiber Concurrency:** ~119,000 tasks/sec cooperative task interleaving
-- **Memory Footprint:** ~4.0 MB base, 6.0 MB peak
+- **Worker Soak Stability (`WorkerSoakTest.php`):** 10,000 consecutive worker requests in 0.058s (171,450 req/sec) with **0.00 MB memory growth** (stable 4.0 MB base)
+- **Security Policy & Threat Model:** See [SECURITY.md](file:///Users/snigdho/dev/php-projects/nexphp/SECURITY.md)
 
 ---
 

@@ -8,7 +8,8 @@
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
         "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0"
+        "psr/http-server-middleware": "^1.0",
+        "psr/log": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0"
@@ -49,7 +50,12 @@
             "Nex\\Filesystem\\": "packages/filesystem/src/",
             "Nex\\Mail\\Contracts\\": "packages/mail-contracts/src/",
             "Nex\\Mail\\": "packages/mail/src/",
-            "Nex\\Notifications\\": "packages/notifications/src/"
+            "Nex\\Notifications\\": "packages/notifications/src/",
+            "Nex\\Security\\": "packages/security/src/",
+            "Nex\\Logging\\": "packages/logging/src/",
+            "Nex\\Metrics\\": "packages/metrics/src/",
+            "Nex\\Health\\": "packages/health/src/",
+            "Nex\\Resilience\\": "packages/resilience/src/"
         }
     },
     "autoload-dev": {
