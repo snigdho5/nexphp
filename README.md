@@ -52,6 +52,20 @@ NexPHP is built with a hybrid architecture:
 | `packages/http-client` | `Nex\HttpClient` | Non-blocking HTTP client using cURL multi with Fiber suspension |
 | `packages/worker-health` | `Nex\WorkerHealth` | Worker diagnostics, memory tracking, and uptime metrics |
 
+### Phase 4: Application Services
+| Package | Namespace | Purpose |
+| :--- | :--- | :--- |
+| `packages/event-contracts` | `Nex\Events\Contracts` | Event dispatcher, listener, and subscriber contracts |
+| `packages/events` | `Nex\Events` | In-process synchronous event dispatcher with priority ordering |
+| `packages/queue-contracts` | `Nex\Queue\Contracts` | Queue adapter and queued job interfaces |
+| `packages/queue` | `Nex\Queue` | Database queue adapter, retry backoff, failed-job store, worker loop |
+| `packages/scheduler` | `Nex\Scheduler` | Cron scheduler DSL, overlap prevention, clock abstraction |
+| `packages/filesystem-contracts` | `Nex\Filesystem\Contracts` | File & object storage contracts |
+| `packages/filesystem` | `Nex\Filesystem` | Local filesystem driver with path-traversal prevention & MIME detection |
+| `packages/mail-contracts` | `Nex\Mail\Contracts` | Mail transport interface |
+| `packages/mail` | `Nex\Mail` | Mailable message builder, SmtpMailer (raw socket), LogMailer (dev/test) |
+| `packages/notifications` | `Nex\Notifications` | Multi-channel notifications (`mail`, `database`), Notifiable trait |
+
 ---
 
 ## CLI Commands
@@ -68,6 +82,15 @@ php bin/nex migrate:rollback     # Rollback last migration batch
 php bin/nex make:model           # Scaffold an Active Record Model
 php bin/nex make:request         # Scaffold a FormRequest validator
 php bin/nex make:policy          # Scaffold an Authorization Policy
+php bin/nex queue:work           # Process jobs from the queue
+php bin/nex queue:failed         # List failed jobs
+php bin/nex queue:retry          # Retry a failed job by ID
+php bin/nex schedule:run         # Run due scheduled tasks
+php bin/nex make:job             # Scaffold a background Job class
+php bin/nex make:event           # Scaffold an Event class
+php bin/nex make:listener        # Scaffold an Event Listener class
+php bin/nex make:mail            # Scaffold a Mailable class
+php bin/nex make:notification    # Scaffold a Notification class
 ```
 
 ---

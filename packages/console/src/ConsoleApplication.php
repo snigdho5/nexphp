@@ -64,6 +64,15 @@ class ConsoleApplication
         $this->add(new \Nex\Console\Commands\MakePolicyCommand($this->app, $this->output));
         $this->add(new \Nex\Console\Commands\WorkerRunCommand($this->app, $this->output));
         $this->add(new \Nex\Console\Commands\RuntimeDiagnosticsCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\QueueWorkCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\QueueFailedCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\QueueRetryCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\ScheduleRunCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeJobCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeEventCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeListenerCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeMailCommand($this->app, $this->output));
+        $this->add(new \Nex\Console\Commands\MakeNotificationCommand($this->app, $this->output));
     }
 
     private function printHelp(): void

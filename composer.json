@@ -39,7 +39,17 @@
             "Nex\\Auth\\Contracts\\": "packages/auth-contracts/src/",
             "Nex\\Auth\\": "packages/auth/src/",
             "Nex\\Authorization\\": "packages/authorization/src/",
-            "Nex\\Testing\\": "packages/testing/src/"
+            "Nex\\Testing\\": "packages/testing/src/",
+            "Nex\\Events\\Contracts\\": "packages/event-contracts/src/",
+            "Nex\\Events\\": "packages/events/src/",
+            "Nex\\Queue\\Contracts\\": "packages/queue-contracts/src/",
+            "Nex\\Queue\\": "packages/queue/src/",
+            "Nex\\Scheduler\\": "packages/scheduler/src/",
+            "Nex\\Filesystem\\Contracts\\": "packages/filesystem-contracts/src/",
+            "Nex\\Filesystem\\": "packages/filesystem/src/",
+            "Nex\\Mail\\Contracts\\": "packages/mail-contracts/src/",
+            "Nex\\Mail\\": "packages/mail/src/",
+            "Nex\\Notifications\\": "packages/notifications/src/"
         }
     },
     "autoload-dev": {
