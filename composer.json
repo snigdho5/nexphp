@@ -3,6 +3,12 @@
     "description": "NexPHP — Next-generation PHP framework designed for modern runtimes, developer ergonomics, and AI vibe-coding",
     "type": "project",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "snigdho",
+            "homepage": "https://github.com/snigdho5"
+        }
+    ],
     "require": {
         "php": ">=8.3",
         "psr/container": "^2.0",
