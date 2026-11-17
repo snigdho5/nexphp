@@ -3,6 +3,12 @@
 > **Less code. More power. Zero magic.**  
 > A next-generation PHP framework designed for modern runtimes (PHP-FPM & persistent workers), developer ergonomics, and AI "vibe coding".
 
+[![Quickstart Guide](https://img.shields.io/badge/Quickstart-3_Minute_Guide-brightgreen)](file:///Users/snigdho/dev/php-projects/nexphp/QUICKSTART.md)
+[![Tests](https://img.shields.io/badge/tests-143%20passed-success)](file:///Users/snigdho/dev/php-projects/nexphp/tests)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.3-blue)](https://www.php.net)
+
+👉 **New here? Check out the [QUICKSTART.md](file:///Users/snigdho/dev/php-projects/nexphp/QUICKSTART.md) guide to create your first app in under 3 minutes!**
+
 ---
 
 ## Architecture Overview
